@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Прогноз погоды</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.1/c3.min.css">
+    <link rel="stylesheet" href="./assets/styles/main.min.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="weather">
+          <div class="weather__block">
+            <div class="weather__title"> 
+              <button class="weather__but">Температура</button>
+            </div>
+            <div class="weather__info">
+              <select class="chart js-example-basic-multiple weather__select" name="" multiple="multiple">
+                <option value="Moscow">Moscow</option>
+                <option value="Novosibirsk">Novosibirsk</option>
+                <option value="London">London</option>
+                <option value="Dibai">Dibai</option>
+                <option value="Brest">Brest</option>
+              </select>
+            </div>
+            <div class="weather__graf">
+              <div id="chart"></div>
+            </div>
+          </div>
+        </div>
+        <div class="weather">
+          <div class="weather__block">
+            <div class="weather__title"> 
+              <button class="weather__but">Давление</button>
+            </div>
+            <div class="weather__info">
+              <select class="pressure js-example-basic-multiple weather__select" name="" multiple="multiple">
+                <option value="Moscow">Moscow</option>
+                <option value="Novosibirsk">Novosibirsk</option>
+                <option value="London">London</option>
+                <option value="Dibai">Dibai</option>
+                <option value="Brest">Brest</option>
+              </select>
+            </div>
+            <div class="weather__graf">
+              <div id="pressure"></div>
+            </div>
+          </div>
+        </div>
+        <div class="weather">
+          <div class="weather__block">
+            <div class="weather__title"> 
+              <button class="weather__but">Влажность</button>
+            </div>
+            <div class="weather__info">
+              <select class="humidity js-example-basic-multiple weather__select" name="" multiple="multiple">
+                <option value="Moscow">Moscow</option>
+                <option value="Novosibirsk">Novosibirsk</option>
+                <option value="London">London</option>
+                <option value="Dibai">Dibai</option>
+                <option value="Brest">Brest</option>
+              </select>
+            </div>
+            <div class="weather__graf">
+              <div id="humidity"></div>
+            </div>
+          </div>
+        </div>
+        <div class="weather">
+          <div class="weather__block">
+            <div class="weather__title"> 
+              <button class="weather__but">Ветер</button>
+            </div>
+            <div class="weather__info">
+              <select class="wind js-example-basic-multiple weather__select" name="" multiple="multiple">
+                <option value="Moscow">Moscow</option>
+                <option value="Novosibirsk">Novosibirsk</option>
+                <option value="London">London</option>
+                <option value="Dibai">Dibai</option>
+                <option value="Brest">Brest</option>
+              </select>
+            </div>
+            <div class="weather__graf">
+              <div id="wind"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./assets/scripts/main.js" defer></script>
+</html>

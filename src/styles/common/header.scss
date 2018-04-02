@@ -1,0 +1,40 @@
+.wrapper{
+    
+    font-family: 'Roboto-Regular';
+    max-width: 1440px;
+    margin: 0 auto;
+}
+.container{
+    display: flex;
+    flex-flow: row wrap;
+}
+.weather{
+    width: 50%;
+    &__block{
+        padding: 20px 40px;
+    }
+    &__select{
+        width: 200px;
+        visibility: hidden;
+    }
+    &__info{
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__but{
+        background: #0d5b9d;
+        border: 0;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: 1px;
+        padding: 7px 40px;
+        border-radius: 5px;
+    }
+}
+.c3-axis-x .tick{
+    display: none;
+}
+.select2-container{
+    width: 45%!important;
+}

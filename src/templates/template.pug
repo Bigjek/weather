@@ -1,0 +1,26 @@
+//- include common/mixin.pug
+
+block variables
+- var nav = [{url:'html',name:'Мои работы'}]
+
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title #{title}
+    meta(content="" name="description")
+    meta(content="" name="keywords")
+    meta(content="width=device-width, initial-scale=1" name="viewport")
+    meta(content="ie=edge" http-equiv="x-ua-compatible")
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.1/c3.min.css')
+    link(rel='stylesheet' href='./assets/styles/main.min.css')
+    
+    script(src='http://d3js.org/d3.v3.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js')
+
+    
+  body
+    .wrapper
+      block content
+
+  script(src='./assets/scripts/main.js' defer)

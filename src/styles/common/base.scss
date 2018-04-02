@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,
+body{
+    height: 100%;
+}
+body{
+    background: linear-gradient( #e2e2e2, transparent 1px ), linear-gradient( 90deg, #e2e2e2, transparent 1px );
+    background-size: 10px 10px;
+    background-position: center center;
+    // border: 3px solid #e2e2e2;
+}
+button, a{
+    outline: none;
+}

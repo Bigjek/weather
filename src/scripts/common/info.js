@@ -64,11 +64,14 @@ const infoInit = (function () {
     oneCity.temp=[];
   };
 
+  // информация
+
   //поиск города
   const sendCity = (city='Moscow', arr, info) => {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${IDAPP}&cnt=16`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${IDAPP}&cnt=30`)
       .then((res) => res.json())
       .then((data) => {
+        console.log('data', data);
         arrClear();
         oneCity.name.push(city);
         data.list.forEach(function(item){ 
@@ -146,7 +149,6 @@ const infoInit = (function () {
       chart.load({
         columns: arrCitys(arr.tempArr),
       });
-
     }, 500);
   };
 

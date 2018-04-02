@@ -66,7 +66,7 @@ const infoInit = (function () {
 
   //поиск города
   const sendCity = (city='Moscow', arr, info) => {
-    fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${IDAPP}&cnt=16`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${IDAPP}&cnt=16`)
       .then((res) => res.json())
       .then((data) => {
         arrClear();

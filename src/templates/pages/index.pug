@@ -10,7 +10,12 @@ block content
       .weather__block
         .weather__title 
           button.weather__but Температура
-        .weather__info
+        .weather__info.date-temp
+          .weather__date-block(data-info="temp")
+            input.weather__date-start(value="", readonly)
+            .weather__date-to
+              span To
+            input.weather__date-end(type="text")
           select.chart.js-example-basic-multiple.weather__select(name="" multiple="multiple")
             option(value="Moscow") Moscow
             option(value="Novosibirsk") Novosibirsk
@@ -23,7 +28,12 @@ block content
       .weather__block
         .weather__title 
           button.weather__but Давление
-        .weather__info
+        .weather__info.date-pressure
+          .weather__date-block(data-info="pressure")
+            input.weather__date-start(value="", readonly)
+            .weather__date-to
+              span To
+            input.weather__date-end(type="text")
           select.pressure.js-example-basic-multiple.weather__select(name="" multiple="multiple")
             option(value="Moscow") Moscow
             option(value="Novosibirsk") Novosibirsk
@@ -36,7 +46,12 @@ block content
       .weather__block
         .weather__title 
           button.weather__but Влажность
-        .weather__info
+        .weather__info.date-humidity
+          .weather__date-block(data-info="humidity")
+            input.weather__date-start(value="", readonly)
+            .weather__date-to
+              span To
+            input.weather__date-end(type="text")
           select.humidity.js-example-basic-multiple.weather__select(name="" multiple="multiple")
             option(value="Moscow") Moscow
             option(value="Novosibirsk") Novosibirsk
@@ -49,7 +64,12 @@ block content
       .weather__block
         .weather__title 
           button.weather__but Ветер
-        .weather__info
+        .weather__info.date-wind
+          .weather__date-block(data-info="wind")
+            input.weather__date-start(value="", readonly)
+            .weather__date-to
+              span To
+            input.weather__date-end(type="text")
           select.wind.js-example-basic-multiple.weather__select(name="" multiple="multiple")
             option(value="Moscow") Moscow
             option(value="Novosibirsk") Novosibirsk

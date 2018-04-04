@@ -3,6 +3,7 @@
     font-family: 'Roboto-Regular';
     max-width: 1440px;
     margin: 0 auto;
+    
 }
 .container{
     display: flex;
@@ -10,8 +11,14 @@
 }
 .weather{
     width: 50%;
+    @include tablet{
+        width: 100%;
+    }
     &__block{
         padding: 20px 40px;
+        @include tablet{
+            padding: 6%;
+        }
     }
     &__select{
         width: 200px;
@@ -19,7 +26,8 @@
     }
     &__info{
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        margin: 6px 0px;
     }
     &__but{
         background: #0d5b9d;
@@ -31,10 +39,49 @@
         padding: 7px 40px;
         border-radius: 5px;
     }
-}
-.c3-axis-x .tick{
-    display: none;
+    &__date{
+        &-block{
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+        }
+        &-start, &-end{
+            margin: 5px 0;
+            padding: 6px 5px;
+            max-width: 80px;
+            border: 1px solid #dedede;
+            font-size: 15px;
+        }
+        &-start{
+            border-radius: 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0
+        }
+        &-end{
+            border-radius: 5px;
+        }
+        &-to{
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            margin: 5px 0;
+            span{
+                padding: 6px;
+                background: #f0f0f0;
+                border: 1px solid #dedede;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px
+            }
+        }
+    }
 }
 .select2-container{
-    width: 45%!important;
+    margin: 5px 0;
+    .select2-selection{
+        border: 1px solid #dedede!important;
+    }
+    @include tablet{
+        width: 100%!important;
+    }
 }

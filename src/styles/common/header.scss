@@ -1,9 +1,6 @@
 .wrapper{
-    
-    font-family: 'Roboto-Regular';
     max-width: 1440px;
     margin: 0 auto;
-    
 }
 .container{
     display: flex;
@@ -78,6 +75,7 @@
 }
 .select2-container{
     margin: 5px 0;
+    min-width: 110px!important;
     .select2-selection{
         border: 1px solid #dedede!important;
     }

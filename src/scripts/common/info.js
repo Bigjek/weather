@@ -5,6 +5,8 @@ const datepicker = require('js-datepicker');
 const infoInit = (function () {
   const IDAPP = '31a1a9b4674714612d2e3008f28a6a3a';
   const oneCity = {name: [],date: [],temp: []};
+  const monthArr = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+  const dayArr = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   const infoWeather = {
     temp:{
       tempDay: 7,
@@ -55,6 +57,7 @@ const infoInit = (function () {
     newArr.forEach((item, i) => {
       sendCity(item, arr, grafType, arr.tempDay);
     });
+    
     changeChart(arr, grafType);
   };
 
@@ -70,17 +73,57 @@ const infoInit = (function () {
     oneCity.temp=[];
   };
 
-  //расчет даты с учетом часов
+  //остаток итераций до нового дня
+  const countTime = (time) => {
+    switch (time) {
+    case '00:00:':
+      return 8;
+      break;
+    case '03:00':
+      return 7;
+      break;
+    case '06:00':
+      return 6;
+      break;
+    case '09:00':
+      return 5;
+      break;
+    case '12:00':
+      return 4;
+      break;
+    case '15:00':
+      return 3;
+      break;
+    case '18:00':
+      return 2;
+      break;
+    case '21:00':
+      return 1;
+      break;
+    default:
+      return 0;
+      break;
+    }
+  };
+
+  // Расчет даты при условии остатка часов до нового дня
+  const countTimeNewDay = (day) => {
+    let currentTime = oneCity.date[0].substring(11, 16),
+      count = countTime(currentTime);
+    return day * 8 + count;
+  };
+
+  // Точное кол-во дней
   const dateRange = (name, day) => {
-    (day > 0) ? typeWeatherDate(name, day*7) : typeWeatherDate(name, 5);
+    (day > 0) ? typeWeatherDate(name, countTimeNewDay(day)) : typeWeatherDate(name, 5);
   }; 
 
-  //обновление данных - дата
+  // Обновление данных - дата
   const updateInfo = (select, arr) => {
     updateCity(arr.tempCityArr, arr, select);  
   };
 
-  //поиск города
+  //Поиск города
   const sendCity = (city='Moscow', arr, info, cnt='7') => {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${IDAPP}&cnt=${cnt}`)
       .then((res) => res.json())
@@ -97,18 +140,20 @@ const infoInit = (function () {
         console.log(err);
       });
   };
+
   // Дата start
   const startDateInput = () => {
-    let start = document.querySelectorAll('.weather__date-start');
-    let date = new Date() ;
+    let start = document.querySelectorAll('.weather__date-start'),
+      date = new Date();
     for (const item of start) {
       item.value  = date.toLocaleDateString();
     }
   };
-  // тип данных - префикс
+
+  // Тип данных - префикс
   const typeWeather = (name) => {
     switch (name) {
-    case 'chart':
+    case 'temp':
       return '°C ';
       break;
     case 'pressure':
@@ -123,10 +168,10 @@ const infoInit = (function () {
     }
   };  
 
-  // тип данных - погода
+  // Тип данных - погода
   const typeWeatherItem = (item, name) => {
     switch (name) {
-    case 'chart':
+    case 'temp':
       oneCity.temp.push(item.main.temp); 
       break;
     case 'pressure':
@@ -141,12 +186,12 @@ const infoInit = (function () {
     }
   };
 
-  // тип данных - дата
+  // Тип данных - дата
   const typeWeatherDate = (name, day) => {
     switch (name) {
     case 'temp':
       infoWeather.temp.tempDay = day; 
-      updateInfo('chart', infoWeather.temp);
+      updateInfo('temp', infoWeather.temp);
       break;
     case 'pressure':
       infoWeather.pressure.tempDay = day; 
@@ -165,7 +210,7 @@ const infoInit = (function () {
 
   // создание графика
   const changeChart = (arr, grafType ) => {
-    var chart = c3.generate({
+    let temp = c3.generate({
       bindto: `#${grafType}`,
       data: {
         x: 'x',
@@ -195,7 +240,7 @@ const infoInit = (function () {
       },
     });
     setTimeout(function () {
-      chart.load({
+      temp.load({
         columns: arrCitys(arr.tempArr),
       });
     }, 500);
@@ -210,9 +255,6 @@ const infoInit = (function () {
     });
     return arrC ;
   };
-  
-  const monthArr = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
-  const dayArr = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
 
   //datepicker
   let pickerT = datepicker(document.querySelector('.date-temp .weather__date-end'), {
@@ -226,14 +268,13 @@ const infoInit = (function () {
       el.value = date.toLocaleDateString();
     },
     onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerT.parent.attributes['data-info'].nodeValue;
+      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerT.parent.parentNode.attributes[1].nodeValue;
       dateRange(dataInfo, countDays(info, info1));
     },
     customMonths: monthArr,
     customDays: dayArr,
     disableMobile: false,
-  }
-  );
+  });
   let pickerP = datepicker(document.querySelector('.date-pressure .weather__date-end'), {
     startDate: new Date(), 
     startDay: 1, 
@@ -245,14 +286,13 @@ const infoInit = (function () {
       el.value = date.toLocaleDateString();
     },
     onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerP.parent.attributes['data-info'].nodeValue;
+      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerP.parent.parentNode.attributes[1].nodeValue;
       dateRange(dataInfo, countDays(info, info1));
     },
     customMonths: monthArr,
     customDays: dayArr,
     disableMobile: false,
-  }
-  );
+  });
   const pickerH = datepicker(document.querySelector('.date-humidity .weather__date-end'), {
     startDate: new Date(), 
     startDay: 1, 
@@ -264,14 +304,13 @@ const infoInit = (function () {
       el.value = date.toLocaleDateString();
     },
     onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerH.parent.attributes['data-info'].nodeValue;
+      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerH.parent.parentNode.attributes[1].nodeValue;
       dateRange(dataInfo, countDays(info, info1));
     },
     customMonths: monthArr,
     customDays: dayArr,
     disableMobile: false,
-  }
-  );
+  });
   const pickerW = datepicker(document.querySelector('.date-wind .weather__date-end'), {
     startDate: new Date(), 
     startDay: 1, 
@@ -283,7 +322,7 @@ const infoInit = (function () {
       el.value = date.toLocaleDateString();
     },
     onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerW.parent.attributes['data-info'].nodeValue;
+      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerW.parent.parentNode.attributes[1].nodeValue;
       dateRange(dataInfo, countDays(info, info1));
     },
     customMonths: monthArr,
@@ -294,13 +333,13 @@ const infoInit = (function () {
   // Кол-во дней
   const countDays = (date1, date2) => {
     let dt1 = new Date(date1), dt2 = new Date(date2);      
-    return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
+    return  Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
   };
 
   return {
     init: () => {
       $('select').select2($('select').val('Moscow'));
-      selectInfo('chart', infoWeather.temp);
+      selectInfo('temp', infoWeather.temp);
       selectInfo('pressure', infoWeather.pressure);
       selectInfo('humidity', infoWeather.humidity);
       selectInfo('wind', infoWeather.wind);

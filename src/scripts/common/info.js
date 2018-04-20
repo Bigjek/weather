@@ -1,6 +1,7 @@
 const $ = require('jquery');
 const select2 = require('select2');
 const DatePickers = require ('./datepickers');
+const Chart = require ('./chart');
 
 const infoInit = (function () {
   const IDAPP = '31a1a9b4674714612d2e3008f28a6a3a';
@@ -56,7 +57,8 @@ const infoInit = (function () {
       sendCity(item, arr, grafType, arr.tempDay);
     });
     
-    changeChart(arr, grafType);
+    let chartInfo = new Chart();
+    chartInfo.changeChart(arr, grafType);
   };
 
   //Добавление в список
@@ -106,8 +108,7 @@ const infoInit = (function () {
 
   // Расчет даты при условии остатка часов до нового дня
   const countTimeNewDay = (day) => {
-    let currentTime = oneCity.date[0].substring(11, 16),
-      count = countTime(currentTime);
+    let currentTime = oneCity.date[0].substring(11, 16), count = countTime(currentTime);
     return day * 8 + count;
   };
 
@@ -141,30 +142,11 @@ const infoInit = (function () {
 
   // Дата start
   const startDateInput = () => {
-    let start = document.querySelectorAll('.weather__date-start'),
-      date = new Date();
+    let start = document.querySelectorAll('.weather__date-start'), date = new Date();
     for (const item of start) {
       item.value  = date.toLocaleDateString();
     }
   };
-
-  // Тип данных - префикс
-  const typeWeather = (name) => {
-    switch (name) {
-    case 'temp':
-      return '°C ';
-      break;
-    case 'pressure':
-      return 'hpa';
-      break;
-    case 'humidity':
-      return '%';
-      break;
-    case 'wind':
-      return 'm/s';
-      break;
-    }
-  };  
 
   // Тип данных - погода
   const typeWeatherItem = (item, name) => {
@@ -207,44 +189,6 @@ const infoInit = (function () {
   };
 
   // создание графика
-  const changeChart = (arr, grafType ) => {
-    let temp = c3.generate({
-      bindto: `#${grafType}`,
-      data: {
-        x: 'x',
-        y: 'y',
-        xFormat: '%Y-%m-%d %H:%M',
-        columns: [],
-      },
-      axis: {
-        x: {
-          type: 'timeseries',
-          tick: {
-            format: '%H:%M',
-          },
-        },
-        y:{
-          tick: {
-            format: function (d) { return d.toFixed(1) + typeWeather(grafType); },
-          },
-        },
-      },
-      tooltip: {
-        format: {
-          title: function (d) { 
-            return  d.toLocaleString(); 
-          },
-        },
-      },
-    });
-    setTimeout(function () {
-      temp.load({
-        columns: arrCitys(arr.tempArr),
-      });
-    }, 500);
-  };
-
-  // создание графика
   const arrCitys = (item) => {
     let arrC = [];
     arrC.push(['x', ...oneCity.date]);
@@ -270,6 +214,7 @@ const infoInit = (function () {
       picker.start(document.querySelector('.date-wind .weather__date-end'));
     },
     dateRange: dateRange,
+    arrCitys: arrCitys,
   };
 
 }());

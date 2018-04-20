@@ -1,12 +1,10 @@
 const $ = require('jquery');
 const select2 = require('select2');
-const datepicker = require('js-datepicker');
+const DatePickers = require ('./datepickers');
 
 const infoInit = (function () {
   const IDAPP = '31a1a9b4674714612d2e3008f28a6a3a';
   const oneCity = {name: [],date: [],temp: []};
-  const monthArr = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
-  const dayArr = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   const infoWeather = {
     temp:{
       tempDay: 7,
@@ -256,86 +254,6 @@ const infoInit = (function () {
     return arrC ;
   };
 
-  //datepicker
-  let pickerT = datepicker(document.querySelector('.date-temp .weather__date-end'), {
-    startDate: new Date(), 
-    startDay: 1, 
-    dateSelected: new Date(new Date().setDate(new Date().getDate() + 1)),
-    minDate: new Date(), 
-    maxDate: new Date(new Date().setDate(new Date().getDate() + 6)), 
-    noWeekends: false, 
-    formatter: function(el, date) {
-      el.value = date.toLocaleDateString();
-    },
-    onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerT.parent.parentNode.attributes[1].nodeValue;
-      dateRange(dataInfo, countDays(info, info1));
-    },
-    customMonths: monthArr,
-    customDays: dayArr,
-    disableMobile: false,
-  });
-  let pickerP = datepicker(document.querySelector('.date-pressure .weather__date-end'), {
-    startDate: new Date(), 
-    startDay: 1, 
-    dateSelected: new Date(new Date().setDate(new Date().getDate() + 1)),
-    minDate: new Date(), 
-    maxDate: new Date(new Date().setDate(new Date().getDate() + 6)), 
-    noWeekends: false, 
-    formatter: function(el, date) {
-      el.value = date.toLocaleDateString();
-    },
-    onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerP.parent.parentNode.attributes[1].nodeValue;
-      dateRange(dataInfo, countDays(info, info1));
-    },
-    customMonths: monthArr,
-    customDays: dayArr,
-    disableMobile: false,
-  });
-  const pickerH = datepicker(document.querySelector('.date-humidity .weather__date-end'), {
-    startDate: new Date(), 
-    startDay: 1, 
-    dateSelected: new Date(new Date().setDate(new Date().getDate() + 1)),
-    minDate: new Date(), 
-    maxDate: new Date(new Date().setDate(new Date().getDate() + 6)), 
-    noWeekends: false, 
-    formatter: function(el, date) {
-      el.value = date.toLocaleDateString();
-    },
-    onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerH.parent.parentNode.attributes[1].nodeValue;
-      dateRange(dataInfo, countDays(info, info1));
-    },
-    customMonths: monthArr,
-    customDays: dayArr,
-    disableMobile: false,
-  });
-  const pickerW = datepicker(document.querySelector('.date-wind .weather__date-end'), {
-    startDate: new Date(), 
-    startDay: 1, 
-    dateSelected: new Date(new Date().setDate(new Date().getDate() + 1)),
-    minDate: new Date(), 
-    maxDate: new Date(new Date().setDate(new Date().getDate() + 6)), 
-    noWeekends: false, 
-    formatter: function(el, date) {
-      el.value = date.toLocaleDateString();
-    },
-    onSelect: function(instance) {
-      let info = new Date(), info1 = instance.dateSelected, dataInfo = pickerW.parent.parentNode.attributes[1].nodeValue;
-      dateRange(dataInfo, countDays(info, info1));
-    },
-    customMonths: monthArr,
-    customDays: dayArr,
-    disableMobile: false,
-  });
-
-  // Кол-во дней
-  const countDays = (date1, date2) => {
-    let dt1 = new Date(date1), dt2 = new Date(date2);      
-    return  Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
-  };
-
   return {
     init: () => {
       $('select').select2($('select').val('Moscow'));
@@ -344,8 +262,16 @@ const infoInit = (function () {
       selectInfo('humidity', infoWeather.humidity);
       selectInfo('wind', infoWeather.wind);
       startDateInput();
+
+      const picker = new DatePickers();
+      picker.start(document.querySelector('.date-temp .weather__date-end'));
+      picker.start(document.querySelector('.date-pressure .weather__date-end'));
+      picker.start(document.querySelector('.date-humidity .weather__date-end'));
+      picker.start(document.querySelector('.date-wind .weather__date-end'));
     },
+    dateRange: dateRange,
   };
+
 }());
 
 module.exports = infoInit;
